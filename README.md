@@ -1,3 +1,5 @@
-# WebTemplate
+# LandLord
 
-A web template.
+A clicker game about owning property.
+
+![](./img/LandLord.png)
