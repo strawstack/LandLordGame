@@ -10,4 +10,26 @@ body {
     font-family: 'Nunito', sans-serif;
     font-size: 1.2rem;
     background: lightgrey;
+
+    display: grid;
+    grid-template-columns: 1fr  minmax(0px, 600px) 1fr;
+}
+
+.content-column {
+    grid-column: 2 / 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px; 
+}
+
+h1, a {
+    font-size: 3rem;
+    color: #8B020B;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: #F7D200;
 }
