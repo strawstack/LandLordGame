@@ -1,31 +1,175 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
 
+:root {
+    --black: #444;
+    --lightblack: #888;
+    --grey: lightgrey;
+
+    --white: white;
+    --lightgrey: #F5F5F5;
+    
+    --red: #D87869;
+    --green: #68CE72;
+    --blue: #ADACE4;
+    --gold: #E7E38C;
+}
+
 html, body {
     margin: 0px;
     padding: 0px;
     height: 100%;
+    color: var(--black);
 }
 
 body {
     font-family: 'Nunito', sans-serif;
-    font-size: 1.2rem;
-    background: lightgrey;
-    padding: 30px 80px;
+    font-size: 1.4rem;
+    font-weight: 1000;
+    background: var(--grey);
+    padding: 20px;
 
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto 1fr;
     grid-template-columns: repeat(3, 1fr);
+    grid-template-areas: 'a a a'
+                         'b c d'
+                         'e e e';
 }
 
-.title {
-    grid-column: 1 / 4;
+.area {
+    padding: 0px 20px;
 }
 
-p {
-    max-width: 250px;
+.title-area {
+    grid-area: a;
+    border: 3px var(--black) solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.btn {
+    .money-area {
+        background: var(--white);
+        height: 40px;
+        width: 500px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 20px;
+        color: var(--green);
+        border: 2px solid var(--green);
+    }
+
+.job-area {
+    grid-area: b;
+    border-right: 3px var(--black) solid;
+    border-bottom: 3px var(--black) solid;
+    border-left: 3px var(--black) solid;
+}
+
+.investment-area {
+    grid-area: c;
+    border-right: 3px var(--black) solid;
+    border-bottom: 3px var(--black) solid;
+}
+
+.loan-area {
+    grid-area: d;
+    border-right: 3px var(--black) solid;
+    border-bottom: 3px var(--black) solid;
+}
+
+.real-estate-area {
+    grid-area: e;
+    border-right: 3px var(--black) solid;
+    border-bottom: 3px var(--black) solid;
+    border-left: 3px var(--black) solid;
+}
+
+.action-btn {
+    height: 60px;
+    width: 160px;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr;
     user-select: none;
-    cursor: pointer;
 }
+
+    .action-btn .label {
+        background: var(--black);
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: background 0.1s;
+    }
+
+        .action-btn .label:hover {
+            background: var(--lightblack);
+        } 
+
+    .action-btn .cost {
+        background: var(--lightgrey);
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--black);
+    }
+
+    .action-btn.red {
+        color: var(--red);
+    }
+
+    .action-btn.green {
+        color: var(--green);
+    }
+
+    .action-btn.blue {
+        color: var(--blue);
+    }
+
+.click-btn {
+    height: 60px;
+    width: 160px;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr;
+    font-weight: bold;
+    user-select: none;
+}
+
+    .click-btn .label {
+        background: var(--black);
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: background 0.1s;
+    }
+
+        .click-btn .label:hover {
+            background: var(--lightblack);
+        } 
+
+    .click-btn .times {
+        background: var(--lightgrey);
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--black);
+        border-top: 2px dashed var(--black);
+        border-right: 2px dashed var(--black);
+        border-bottom: 2px dashed var(--black);
+    }
+
+    .click-btn.gold {
+        color: var(--gold);
+    }
