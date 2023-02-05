@@ -24,3 +24,8 @@ body {
 p {
     max-width: 250px;
 }
+
+.btn {
+    user-select: none;
+    cursor: pointer;
+}
