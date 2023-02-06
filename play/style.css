@@ -58,6 +58,7 @@ body {
         padding: 20px;
         color: var(--green);
         border: 2px solid var(--green);
+        font-size: 1.7rem;
     }
 
 .job-area {
@@ -172,4 +173,20 @@ body {
 
     .click-btn.gold {
         color: var(--gold);
+    }
+
+.description {
+    display: flex;
+    align-items: center;
+}
+    .description img {
+        width: auto;
+        height: 30px;
+    }
+    .description img.green {
+        filter: invert(50%) sepia(51%) hue-rotate(126deg) saturate(51);
+    }
+    .description .text {
+        display: flex;
+        align-items: center;
     }
