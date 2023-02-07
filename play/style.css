@@ -17,7 +17,6 @@
 html, body {
     margin: 0px;
     padding: 0px;
-    height: 100%;
     color: var(--black);
 }
 
@@ -39,6 +38,17 @@ body {
 .area {
     padding: 0px 20px;
 }
+
+    .action-row {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin: 20px 0px;
+        max-width: 400px;
+    }
+        .action-row span {
+            margin-left: 10px;
+        }
 
 .title-area {
     grid-area: a;
@@ -85,7 +95,24 @@ body {
     border-right: 3px var(--black) solid;
     border-bottom: 3px var(--black) solid;
     border-left: 3px var(--black) solid;
+    display: grid;
+    grid-template-rows: auto repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 20px;
 }
+
+    .real-estate-area .cell:first-child {
+        grid-column: 1 / 4;
+    }
+
+    .real-estate-area .cell {
+        padding: 0px 20px;
+    }
+
+    .real-estate-area .description img {
+        align-self: flex-start;
+        margin-top: 5px;
+    }
 
 .action-btn {
     height: 60px;
@@ -94,8 +121,8 @@ body {
     grid-template-rows: 1fr;
     grid-template-columns: 1fr 1fr;
     user-select: none;
+    margin-left: 10px;
 }
-
     .action-btn .label {
         background: var(--black);
         border-top-left-radius: 5px;
@@ -141,10 +168,12 @@ body {
     grid-template-columns: 1fr 1fr;
     font-weight: bold;
     user-select: none;
+    margin-left: 10px;
 }
 
     .click-btn .label {
         background: var(--black);
+        color: var(--gold);
         border-top-left-radius: 5px;
         border-bottom-left-radius: 5px;
         display: flex;
@@ -180,11 +209,9 @@ body {
     align-items: center;
 }
     .description img {
-        width: auto;
-        height: 30px;
-    }
-    .description img.green {
-        filter: invert(50%) sepia(51%) hue-rotate(126deg) saturate(51);
+        width: 25px;
+        height: 25px;
+        margin-right: 10px;
     }
     .description .text {
         display: flex;
