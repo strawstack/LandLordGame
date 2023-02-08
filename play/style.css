@@ -46,7 +46,7 @@ body {
         margin: 20px 0px;
         max-width: 400px;
     }
-        .action-row span {
+        .action-row > span {
             margin-left: 10px;
         }
 
@@ -113,6 +113,12 @@ body {
         align-self: flex-start;
         margin-top: 5px;
     }
+
+.subtitle-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
 .action-btn {
     height: 60px;
@@ -217,3 +223,15 @@ body {
         display: flex;
         align-items: center;
     }
+
+.deactive {
+    opacity: 0.5;   
+}
+
+.deactive .action-btn .label  {
+    cursor: not-allowed;   
+}
+
+.deactive .click-btn .label  {
+    cursor: not-allowed;   
+}

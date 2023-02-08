@@ -11,45 +11,53 @@
         
         <div class="title-area area">
             <h1>LandLord</h1>
-            <div class="money-area">$0</div>
+            <div class="money-area">$<span>0</span></div>
         </div>
 
         <div class="job-area area">
             
-            <h2>Job</h2>
+            <div class="subtitle-area">
+                <h2>Job</h2>
+                <span>
+                    <span>+ </span><span>$</span><span class="job-value">0</span>
+                </span>
+            </div>
 
             <div class="description">
                 <img src="../img/icon/desc/green/plus.svg" />
-                <span class="text">nth job pays 1/n * $300 /s</span>
+                <span class="text">click to get paid</span>
             </div>
             <div class="description">
                 <img src="../img/icon/desc/green/dollar.svg" />
-                <span class="text">promotion adds extra 10%</span>
+                <span class="text">promotion doubles your salary</span>
             </div>
 
             <div class="action-row">
                 <img src="../img/icon/action/green/work.svg" />
-                <div class="action-btn red">
-                    <div class="label">Pay</div>
-                    <div class="cost">$100</div>
+                <div class="action-btn green">
+                    <div class="label work-btn">Work</div>
+                    <div class="cost work-value">$<span>1</span></div>
                 </div>
-                <span>X</span>
-                <span>0</span><span>/</span><span>3</span>
             </div>
 
-            <div class="action-row">
+            <div class="action-row promo-row">
                 <img src="../img/icon/action/blue/promotion.svg" />
                 <div class="action-btn red">
-                    <div class="label">Pay</div>
-                    <div class="cost">$100</div>
+                    <div class="label promo-btn">Pay</div>
+                    <div class="cost promo_cost">$<span>0</span></div>
                 </div>
                 <span>X</span>
-                <span>0</span><span>/</span><span>3</span>
+                <span class="promo_count">0</span>
             </div>
         </div>
         <div class="investment-area area">
 
-            <h2>Investment</h2>
+            <div class="subtitle-area">
+                <h2>Investment</h2>
+                <span>
+                    <span>+ </span><span>$</span><span>0</span><span> /s</span>
+                </span>
+            </div>
 
             <div class="description">
                 <img src="../img/icon/desc/green/plus.svg" />
@@ -86,7 +94,12 @@
         </div>
         <div class="loan-area area">
 
-            <h2>Loan</h2>
+            <div class="subtitle-area">
+                <h2>Loan</h2>
+                <span>
+                    <span>- </span><span>$</span><span>0</span><span> /s</span>
+                </span>
+            </div>
 
             <div class="description">
                 <img src="../img/icon/desc/red/minus.svg" />
@@ -131,7 +144,12 @@
         <div class="real-estate-area">
             
             <div class="cell">
-                <h2>Real Estate</h2>
+                <div class="subtitle-area">
+                    <h2>Real Estate</h2>
+                    <span>
+                        <span>+ </span><span>$</span><span>0</span><span> /s</span>
+                    </span>
+                </div>
             </div>
 
             <div class="cell">
@@ -142,7 +160,7 @@
                 </div>
                 <div class="description">
                     <img src="../img/icon/desc/green/plus.svg" />
-                    <span class="text">earn 0.032% sale price /s with renter</span>
+                    <span class="text">renter pays 0.032% /s of the sale price</span>
                 </div>
                 <div class="description">
                     <img src="../img/icon/desc/blue/dollar.svg" />
