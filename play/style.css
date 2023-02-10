@@ -20,6 +20,11 @@ html, body {
     color: var(--black);
 }
 
+html {
+    display: flex;
+    justify-content: center;
+}
+
 body {
     font-family: 'Nunito', sans-serif;
     font-size: 1.4rem;
@@ -33,6 +38,7 @@ body {
     grid-template-areas: 'a a a'
                          'b c d'
                          'e e e';
+    max-width: 1280px;
 }
 
 .area {
@@ -46,8 +52,8 @@ body {
         margin: 20px 0px;
         max-width: 400px;
     }
-        .action-row > span {
-            margin-left: 10px;
+        .action-row > .times {
+            margin: 0px 8px;
         }
 
 .title-area {
@@ -235,3 +241,19 @@ body {
 .deactive .click-btn .label  {
     cursor: not-allowed;   
 }
+
+.sell-area {
+    width: 40px;
+    height: 60px;
+    background: var(--black);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+}
+
+    .sell-area:hover {
+        cursor: pointer;
+        background: var(--lightblack);
+    }

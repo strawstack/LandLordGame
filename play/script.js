@@ -25,7 +25,6 @@
 
     // ref - displays
     const total_money = qs(".money-area span");
-    const job_value   = qs(".job-value");
     
     // ref - UI state
     const promo_cost  = qs(".promo_cost span");
@@ -44,7 +43,6 @@
         
         // Map state to displays
         total_money.innerHTML = state.total_money;
-        job_value.innerHTML = state.job_value;
 
         // Set interface values
         promo_cost.innerHTML  = state.data.promo_cost[state.promo_index];
