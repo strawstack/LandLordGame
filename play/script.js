@@ -152,7 +152,24 @@
                 9500
             ],
             invest_rate: 0.0016,
-            loan_rate: 0.0032, 
+            loan_rate: 0.0032,
+            renter_rate: 0.0032,
+            prop_tax_rate: 0.0016,
+            renter_time: 120,
+            house_cost: [
+                100,
+                1000,
+                5000,
+                6000, 
+                9900
+            ],
+            renter_click: [
+                20,
+                30,
+                50,
+                75,
+                100
+            ]
         }
 
         const state = {
@@ -178,6 +195,9 @@
             // counts
             invest_count: [0, 0, 0],
             loan_state: [false, false, false],
+            agent: [false, false, false, false, false],
+            renter_exists: [false, false, false, false, false],
+            renter_time_left: [0, 0, 0, 0, 0],
 
             // UI state
             active: {
