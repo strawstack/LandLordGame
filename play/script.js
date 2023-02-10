@@ -42,17 +42,21 @@
     // ref - displays
     const total_money = qs(".money-area span");
     const invest_gain = qs(".invest-gain");
+    const loan_loss = qs(".loan-loss");
     
     // ref - UI state
     const promo_cost  = qs(".promo_cost span");
     const promo_count = qs(".promo_count");
     const invest_cost  = qsa(".invest-cost");
     const invest_count = qsa(".invest-count");
+    const loan_value  = qsa(".loan-value");
+    const loan_count  = qsa(".loan-count");
     const work_value  = qs(".work-value span");
 
     // ref - UI elements
-    const promo_row = qs(".promo-row");
+    const promo_row  = qs(".promo-row");
     const invest_row = qsa(".invest-row");
+    const loan_row   = qsa(".loan-row");
 
     /*
     const salary = document.querySelector(".salary.display > span");
@@ -64,6 +68,7 @@
         // Map state to displays
         total_money.innerHTML = state.total_money;
         invest_gain.innerHTML = state.total_invest * state.data.invest_rate;
+        loan_loss.innerHTML   = state.total_loan * state.data.loan_rate;
 
         // Set interface values
         promo_cost.innerHTML  = state.data.promo_cost[state.promo_index];
@@ -74,6 +79,12 @@
             invest_cost[i].innerHTML = state.data.invest_cost[i];
             invest_count[i].innerHTML = state.invest_count[i];
         }
+        for (let i in state.data.loan_value) {
+            i = parseInt(i, 10);
+            loan_value[i].innerHTML = state.data.loan_value[i];
+            loan_count[i].innerHTML = state.loan_count[i];
+        }
+
         // Set active state of elements
         setActiveState(state);
         applyActiveState(state);
@@ -88,6 +99,12 @@
             const invest_cost = state.data.invest_cost[i];
             state.active.invest_row[i] = invest_cost <= state.total_money; 
         }
+
+        for (let i in state.data.loan_value) {
+            i = parseInt(i, 10);
+            const loan_value = state.data.loan_value[i];
+            state.active.loan_row[i] = loan_value <= state.total_invest * 10;
+        }
     }
 
     function applyActiveState(state) {
@@ -95,6 +112,10 @@
         for (let i in state.data.invest_cost) {
             i = parseInt(i, 10);
             setActive(invest_row[i], state.active.invest_row[i]);
+        }
+        for (let i in state.data.loan_value) {
+            i = parseInt(i, 10);
+            setActive(loan_row[i], state.active.loan_row[i]);
         }
     }
 
@@ -112,7 +133,13 @@
                 1000,
                 5000
             ],
-            invest_rate: 0.0016, 
+            loan_value: [
+                1000,
+                5000,
+                9500
+            ],
+            invest_rate: 0.0016,
+            loan_rate: 0.0032, 
         }
 
         const state = {
@@ -120,7 +147,7 @@
             data: data,
 
             // work
-            work_value: 1,
+            work_value: 50,
 
             // money
             total_money: 0,
@@ -130,15 +157,18 @@
             total_invest: 0,
 
             // loans
+            total_loan: 0,
 
             // data index
             promo_index: 0,
             invest_count: [0, 0, 0],
+            loan_count: [0, 0, 0],
 
             // UI state
             active: {
                 promo_row: false,
-                invest_row: [false, false, false]
+                invest_row: [false, false, false],
+                loan_row: [false, false, false],
             }
         };
 
@@ -166,9 +196,18 @@
             }
         });
 
+        click_all(".loan-btn", (state, index) => {
+            if (state.active.loan_row[index]) {
+                state.total_money += state.data.loan_value[index];
+                state.loan_count[index] += 1;
+                state.total_loan += state.data.loan_value[index];
+            }
+        });
+
         render(state);
         setInterval(() => {
-            state.total_money += state.total_invest * state.data.invest_rate;
+            const loan_loss = state.total_loan * state.data.loan_rate;
+            state.total_money += state.total_invest * state.data.invest_rate - loan_loss;
             render(state);
         }, 1000);
 
