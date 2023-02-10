@@ -30,6 +30,13 @@
         };
     }
 
+    function setColor(elem, colorClassName) {
+        let names = elem.className.split(" ");
+        names = names.filter((x) => x !== "red" && x !== "green" && x !== "blue");
+        names.push(colorClassName);
+        elem.className = names.join(" ");
+    }
+
     function setActive(elem, state) {
         let names = elem.className.split(" ");
         names = names.filter((x) => x !== "deactive");
@@ -50,13 +57,13 @@
     const invest_cost  = qsa(".invest-cost");
     const invest_count = qsa(".invest-count");
     const loan_value  = qsa(".loan-value");
-    const loan_count  = qsa(".loan-count");
     const work_value  = qs(".work-value span");
 
     // ref - UI elements
     const promo_row  = qs(".promo-row");
     const invest_row = qsa(".invest-row");
     const loan_row   = qsa(".loan-row");
+    const loan_btn   = qsa(".loan-btn");
 
     /*
     const salary = document.querySelector(".salary.display > span");
@@ -82,8 +89,14 @@
         for (let i in state.data.loan_value) {
             i = parseInt(i, 10);
             loan_value[i].innerHTML = state.data.loan_value[i];
-            loan_count[i].innerHTML = state.loan_count[i];
-        }
+            if (state.loan_state[i]) {
+                loan_btn[i].innerHTML = "Pay";
+                setColor(loan_btn[i].parentElement, "red");
+            } else {
+                loan_btn[i].innerHTML = "Get";
+                setColor(loan_btn[i].parentElement, "green");
+            }
+        } 
 
         // Set active state of elements
         setActiveState(state);
@@ -161,8 +174,10 @@
 
             // data index
             promo_index: 0,
+
+            // counts
             invest_count: [0, 0, 0],
-            loan_count: [0, 0, 0],
+            loan_state: [false, false, false],
 
             // UI state
             active: {
@@ -198,9 +213,22 @@
 
         click_all(".loan-btn", (state, index) => {
             if (state.active.loan_row[index]) {
-                state.total_money += state.data.loan_value[index];
-                state.loan_count[index] += 1;
-                state.total_loan += state.data.loan_value[index];
+
+                // You have the loan
+                if (state.loan_state[index]) {
+
+                    // Can you afford to pay it off
+                    if (state.total_money >= state.data.loan_value[index]) {
+                        state.total_money -= state.data.loan_value[index];
+                        state.total_loan -= state.data.loan_value[index];
+                        state.loan_state[index] = false;
+                    }
+
+                } else { // You don't have the loan
+                    state.total_money += state.data.loan_value[index];
+                    state.total_loan += state.data.loan_value[index];
+                    state.loan_state[index] = true;
+                }
             }
         });
 
