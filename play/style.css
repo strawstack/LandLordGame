@@ -3,6 +3,7 @@
 :root {
     --black: #444;
     --lightblack: #888;
+    --darkblack: #111;
     --grey: lightgrey;
 
     --white: white;
@@ -147,7 +148,7 @@ body {
     }
 
         .action-btn .label:hover {
-            background: var(--lightblack);
+            background: var(--darkblack);
         } 
 
     .action-btn .cost {

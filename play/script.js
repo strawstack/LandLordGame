@@ -4,6 +4,9 @@
     function qs(selector) {
         return document.querySelector(selector);
     }
+    function qsa(selector) {
+        return document.querySelectorAll(selector);
+    }
 
     function clickFact(state) {
         return (selector, fun) => {
@@ -11,6 +14,19 @@
                 fun(state);
                 render(state);
             });
+        };
+    }
+
+    function clickFact_all(state) {
+        return (selector, fun) => {
+            const elems = qsa(selector);
+            elems.forEach((e, index) => {
+                e.addEventListener("click", () => {
+                    fun(state, index);
+                    render(state);
+                });
+            });
+
         };
     }
 
@@ -25,14 +41,18 @@
 
     // ref - displays
     const total_money = qs(".money-area span");
+    const invest_gain = qs(".invest-gain");
     
     // ref - UI state
     const promo_cost  = qs(".promo_cost span");
     const promo_count = qs(".promo_count");
+    const invest_cost  = qsa(".invest-cost");
+    const invest_count = qsa(".invest-count");
     const work_value  = qs(".work-value span");
 
     // ref - UI elements
     const promo_row = qs(".promo-row");
+    const invest_row = qsa(".invest-row");
 
     /*
     const salary = document.querySelector(".salary.display > span");
@@ -43,12 +63,17 @@
         
         // Map state to displays
         total_money.innerHTML = state.total_money;
+        invest_gain.innerHTML = state.total_invest * state.data.invest_rate;
 
         // Set interface values
         promo_cost.innerHTML  = state.data.promo_cost[state.promo_index];
         promo_count.innerHTML = state.promo_index;
         work_value.innerHTML  = state.work_value;
-        
+        for (let i in state.data.invest_cost) {
+            i = parseInt(i, 10);
+            invest_cost[i].innerHTML = state.data.invest_cost[i];
+            invest_count[i].innerHTML = state.invest_count[i];
+        }
         // Set active state of elements
         setActiveState(state);
         applyActiveState(state);
@@ -56,11 +81,21 @@
 
     function setActiveState(state) {
         const next_promo_cost = state.data.promo_cost[state.promo_index];
-        state.active.promo_row = next_promo_cost <= state.total_money; 
+        state.active.promo_row = next_promo_cost <= state.total_money;
+
+        for (let i in state.data.invest_cost) {
+            i = parseInt(i, 10);
+            const invest_cost = state.data.invest_cost[i];
+            state.active.invest_row[i] = invest_cost <= state.total_money; 
+        }
     }
 
     function applyActiveState(state) {
         setActive(promo_row, state.active.promo_row);
+        for (let i in state.data.invest_cost) {
+            i = parseInt(i, 10);
+            setActive(invest_row[i], state.active.invest_row[i]);
+        }
     }
 
     function main() {
@@ -72,6 +107,12 @@
                 1000,
                 5000
             ],
+            invest_cost: [
+                100,
+                1000,
+                5000
+            ],
+            invest_rate: 0.0016, 
         }
 
         const state = {
@@ -86,20 +127,23 @@
             job_value: 0,
 
             // gains
-            investments: 0,
+            total_invest: 0,
 
             // loans
 
             // data index
             promo_index: 0,
+            invest_count: [0, 0, 0],
 
             // UI state
             active: {
-                promo_row: false
+                promo_row: false,
+                invest_row: [false, false, false]
             }
         };
 
-        const click = clickFact(state); 
+        const click = clickFact(state);
+        const click_all = clickFact_all(state); 
 
         click(".work-btn", (state) => {
             state.total_money += state.work_value;
@@ -114,9 +158,17 @@
             }
         });
 
+        click_all(".invest-btn", (state, index) => {
+            if (state.active.invest_row[index]) {
+                state.total_money -= state.data.invest_cost[index];
+                state.invest_count[index] += 1;
+                state.total_invest += state.data.invest_cost[index];
+            }
+        });
+
         render(state);
         setInterval(() => {
-            state.total_money += state.investments;
+            state.total_money += state.total_invest * state.data.invest_rate;
             render(state);
         }, 1000);
 
