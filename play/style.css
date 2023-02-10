@@ -230,7 +230,7 @@ body {
         align-items: center;
     }
 
-.deactive {
+.deactive img, .deactive .action-btn {
     opacity: 0.5;   
 }
 
