@@ -85,6 +85,8 @@
     const house_value = qsa(".house-value");
     const house_count = qsa(".house-count");
     const agent_cost  = qsa(".agent-cost");
+    const renter_clicks = qsa(".renter-clicks");
+    const renter_time   = qsa(".renter-time");
 
     // ref - UI elements
     const promo_row  = qs(".promo-row");
@@ -93,6 +95,7 @@
     const loan_btn   = qsa(".loan-btn");
     const house_row  = qsa(".house-row");
     const agent_row  = qsa(".agent-row");
+    const renter_row = qsa(".renter-row"); 
     const invest_sell_btn = qsa(".sell-area.invest");
     const house_sell_btn  = qsa(".house-row .sell-area");
     const agent_fire_btn  = qsa(".fire-area");
@@ -108,7 +111,7 @@
         total_sign.innerHTML = (state.total_money >= 0)? "+" : "-";
         total_money.innerHTML = Math.abs(state.total_money);
         setColor(money_area, (state.total_money >= 0)? "green" : "red");
-        
+
         invest_gain.innerHTML = state.total_invest * state.data.invest_rate;
         loan_loss.innerHTML   = state.total_loan * state.data.loan_rate;
         
@@ -142,6 +145,11 @@
             house_count[i].innerHTML = state.house_count[i];
             const cost = calcAgentCost(state, i);
             agent_cost[i].innerHTML = cost;
+            renter_time[i].innerHTML = state.renter_time_left[i];
+        }
+        for (let i in state.renter_exists) {
+            i = parseInt(i, 10);
+            renter_clicks[i].innerHTML = state.renter_clicks_left[i];
         }
 
         // Set active state of elements
@@ -172,6 +180,7 @@
             state.active.house_row[i] = house_value <= state.total_money;
             state.active.house_sell_btn[i] = state.house_count[i] > 0;
             state.active.agent_fire_btn[i] = state.agent[i];
+            state.active.renter_row[i] = state.house_count[i] > 0; 
         }
     }
 
@@ -192,11 +201,11 @@
             setActive(house_sell_btn[i], state.active.house_sell_btn[i]);
             setActive(agent_fire_btn[i], state.active.agent_fire_btn[i]);
             setActive(agent_row[i], !state.active.agent_fire_btn[i]);
+            setActive(renter_row[i], state.active.renter_row[i]);
         }
     }
 
     function main() {
-        
         // data
         const data = {
             promo_cost: [
@@ -239,6 +248,13 @@
                 4000,
                 6500,
                 9500
+            ],
+            renter_clicks: [
+                30,
+                40,
+                50,
+                60,
+                75
             ]
         }
 
@@ -269,6 +285,7 @@
             agent: [false, false, false, false, false],
             renter_exists: [false, false, false, false, false],
             renter_time_left: [0, 0, 0, 0, 0],
+            renter_clicks_left: [0, 0, 0, 0, 0],
 
             // UI state
             active: {
@@ -279,8 +296,15 @@
                 house_row: [false, false, false, false, false],
                 house_sell_btn: [false, false, false, false, false],
                 agent_fire_btn: [false, false, false, false, false],
+                renter_row: [false, false, false, false, false],
             }
         };
+
+        // init
+        for (let i in state.renter_exists) {
+            i = parseInt(i, 10);
+            state.renter_clicks_left[i] = state.data.renter_click[i];
+        }
 
         const click = clickFact(state);
         const click_all = clickFact_all(state); 
@@ -357,12 +381,34 @@
             state.agent[index] = false;
         });
 
+        click_all(".renter-btn", (state, index) => {
+            if (state.active.renter_row[index]) {
+                state.renter_clicks_left[index] -= 1;
+                if (state.renter_clicks_left[index] <= 0) {
+                    state.renter_exists[index] = true;
+                    state.renter_time_left[index] = state.data.renter_time;
+                    state.renter_clicks_left[index] = state.data.renter_clicks[index];
+                }
+            }
+        });
+
         render(state);
         setInterval(() => {
             const house_net = calcHouseNet(state);
             const invest_gain = state.total_invest * state.data.invest_rate;
             const loan_loss  = state.total_loan * state.data.loan_rate;
             state.total_money += house_net + invest_gain - loan_loss;
+
+            for (let i in state.renter_exists) {
+                i = parseInt(i, 10);
+                if (state.renter_exists[i]) {
+                    state.renter_time_left[i] -= 1;
+                    if (state.renter_time_left[i] <= 0) {
+                        state.renter_exists[i] = false;
+                    }
+                }
+            }
+
             render(state);
         }, 1000);
 

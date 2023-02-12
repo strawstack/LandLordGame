@@ -238,8 +238,8 @@ body {
         align-items: center;
     }
 
-.deactive img, .deactive .action-btn {
-    opacity: 0.5;   
+.deactive img, .deactive .action-btn, .deactive .click-btn {
+    opacity: 0.5;
 }
 
 .deactive .action-btn .label  {
@@ -252,6 +252,14 @@ body {
 
 .deactive .click-btn .label  {
     cursor: not-allowed;   
+}
+
+    .deactive .click-btn .label:hover {
+        background: var(--black);
+    }
+
+.deactive .rent-timer, .deactive .renter-time {
+    display: none;
 }
 
 .sell-area, .fire-area {
@@ -274,4 +282,10 @@ body {
     cursor: not-allowed;
     background: var(--lightgrey);
     opacity: 0.5;
+}
+
+.rent-timer {
+    width: 25px;
+    height: 25px;
+    margin: 0px 10px;
 }
