@@ -256,5 +256,11 @@ body {
 
     .sell-area:hover {
         cursor: pointer;
-        background: var(--lightblack);
+        background: var(--darkblack);
     }
+
+.sell-area.deactive  {
+    cursor: not-allowed;
+    background: var(--lightgrey);
+    opacity: 0.5;
+}

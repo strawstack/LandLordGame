@@ -64,6 +64,7 @@
     const invest_row = qsa(".invest-row");
     const loan_row   = qsa(".loan-row");
     const loan_btn   = qsa(".loan-btn");
+    const invest_sell_btn = qsa(".sell-area.invest");
 
     /*
     const salary = document.querySelector(".salary.display > span");
@@ -110,7 +111,8 @@
         for (let i in state.data.invest_cost) {
             i = parseInt(i, 10);
             const invest_cost = state.data.invest_cost[i];
-            state.active.invest_row[i] = invest_cost <= state.total_money; 
+            state.active.invest_row[i] = invest_cost <= state.total_money;
+            state.active.invest_sell_btn[i] = state.invest_count[i] > 0; 
         }
 
         for (let i in state.data.loan_value) {
@@ -125,6 +127,7 @@
         for (let i in state.data.invest_cost) {
             i = parseInt(i, 10);
             setActive(invest_row[i], state.active.invest_row[i]);
+            setActive(invest_sell_btn[i], state.active.invest_sell_btn[i]);
         }
         for (let i in state.data.loan_value) {
             i = parseInt(i, 10);
@@ -203,6 +206,7 @@
             active: {
                 promo_row: false,
                 invest_row: [false, false, false],
+                invest_sell_btn: [false, false, false],
                 loan_row: [false, false, false],
             }
         };
@@ -228,6 +232,14 @@
                 state.total_money -= state.data.invest_cost[index];
                 state.invest_count[index] += 1;
                 state.total_invest += state.data.invest_cost[index];
+            }
+        });
+
+        click_all(".sell-area.invest", (state, index) => {
+            if (state.active.invest_sell_btn[index]) {
+                state.total_money += state.data.invest_cost[index];
+                state.invest_count[index] -= 1;
+                state.total_invest -= state.data.invest_cost[index];
             }
         });
 
