@@ -10,7 +10,10 @@
     <body>
         
         <div class="title-area area">
-            <div class="money-area">$<span>0</span></div>
+            <div class="money-area">
+                <span class="sign"></span>
+                <span>$<span class="value">0</span></span>
+            </div>
             <h1>LandLord</h1>
         </div>
 
@@ -59,7 +62,7 @@
 
             <div class="description">
                 <img src="../img/icon/desc/green/plus.svg" />
-                <span class="text">gain 0.16% /s</span>
+                <span class="text">gain 0.16% /s dividend</span>
             </div>
 
             <div class="action-row invest-row">
@@ -161,7 +164,9 @@
                 <div class="subtitle-area">
                     <h2>Real Estate</h2>
                     <span>
-                        <span>+ </span><span>$</span><span>0</span><span> /s</span>
+                        <span class="house-sign">+ </span>
+                        <span>$</span>
+                        <span class="house-net">0</span><span> /s</span>
                     </span>
                 </div>
             </div>
@@ -187,23 +192,31 @@
             </div>
 
             <div class="cell">
-                <div class="action-row">
+                <div class="action-row house-row">
                     <img src="../img/icon/bldg/shelter.svg" />
                     <div class="action-btn red">
-                        <div class="label">Pay</div>
-                        <div class="cost">$100</div>
+                        <div class="label house-btn">Pay</div>
+                        <div class="cost">
+                            <span>$</span><span class="house-value">0</span>
+                        </div>
                     </div>
                     <div class="sell-area">
                         <img src="../img/icon/action/green/sell.svg" />
                     </div>
                     <span class="times">X</span>
-                    <span>0</span><span>/</span><span>3</span>
+                    <span class="house-count">0</span><span>/</span><span>3</span>
                 </div>
-                <div class="action-row no-count">
+                <div class="action-row agent-row">
                     <img src="../img/icon/action/red/agent.svg" />
                     <div class="action-btn red">
-                        <div class="label">Pay</div>
-                        <div class="cost">?</div>
+                        <div class="label agent-hire">Hire</div>
+                        <div class="cost">
+                            <span>$</span>
+                            <span class="agent-cost">0</span><span>/s</span>
+                        </div>
+                    </div>
+                    <div class="fire-area">
+                        <img src="../img/icon/action/red/fire.svg" />
                     </div>
                 </div>
                 <div class="action-row">
@@ -216,23 +229,31 @@
             </div>
 
             <div class="cell">
-                <div class="action-row">
+                <div class="action-row house-row">
                     <img src="../img/icon/bldg/large_house.svg" />
                     <div class="action-btn red">
-                        <div class="label">Pay</div>
-                        <div class="cost">$100</div>
+                        <div class="label house-btn">Pay</div>
+                        <div class="cost">
+                            <span>$</span><span class="house-value">0</span>
+                        </div>
                     </div>
                     <div class="sell-area">
                         <img src="../img/icon/action/green/sell.svg" />
                     </div>
                     <span class="times">X</span>
-                    <span>0</span><span>/</span><span>3</span>
+                    <span class="house-count">0</span><span>/</span><span>3</span>
                 </div>
-                <div class="action-row no-count">
+                <div class="action-row agent-row">
                     <img src="../img/icon/action/red/agent.svg" />
                     <div class="action-btn red">
-                        <div class="label">Pay</div>
-                        <div class="cost">?</div>
+                        <div class="label agent-hire">Hire</div>
+                        <div class="cost">
+                            <span>$</span>
+                            <span class="agent-cost">0</span><span>/s</span>
+                        </div>
+                    </div>
+                    <div class="fire-area">
+                        <img src="../img/icon/action/red/fire.svg" />
                     </div>
                 </div>
                 <div class="action-row">
@@ -245,23 +266,31 @@
             </div>
             
             <div class="cell">
-                <div class="action-row">
+                <div class="action-row house-row">
                     <img src="../img/icon/bldg/holiday_village.svg" />
                     <div class="action-btn red">
-                        <div class="label">Pay</div>
-                        <div class="cost">$100</div>
+                        <div class="label house-btn">Pay</div>
+                        <div class="cost">
+                            <span>$</span><span class="house-value">0</span>
+                        </div>
                     </div>
                     <div class="sell-area">
                         <img src="../img/icon/action/green/sell.svg" />
                     </div>
                     <span class="times">X</span>
-                    <span>0</span><span>/</span><span>3</span>
+                    <span class="house-count">0</span><span>/</span><span>3</span>
                 </div>
-                <div class="action-row no-count">
+                <div class="action-row agent-row">
                     <img src="../img/icon/action/red/agent.svg" />
                     <div class="action-btn red">
-                        <div class="label">Pay</div>
-                        <div class="cost">?</div>
+                        <div class="label agent-hire">Hire</div>
+                        <div class="cost">
+                            <span>$</span>
+                            <span class="agent-cost">0</span><span>/s</span>
+                        </div>
+                    </div>
+                    <div class="fire-area">
+                        <img src="../img/icon/action/red/fire.svg" />
                     </div>
                 </div>
                 <div class="action-row">
@@ -274,23 +303,31 @@
             </div>
 
             <div class="cell">
-                <div class="action-row">
+                <div class="action-row house-row">
                     <img src="../img/icon/bldg/apartment.svg" />
                     <div class="action-btn red">
-                        <div class="label">Pay</div>
-                        <div class="cost">$100</div>
+                        <div class="label house-btn">Pay</div>
+                        <div class="cost">
+                            <span>$</span><span class="house-value">0</span>
+                        </div>
                     </div>
                     <div class="sell-area">
                         <img src="../img/icon/action/green/sell.svg" />
                     </div>
                     <span class="times">X</span>
-                    <span>0</span><span>/</span><span>3</span>
+                    <span class="house-count">0</span><span>/</span><span>3</span>
                 </div>
-                <div class="action-row no-count">
+                <div class="action-row agent-row">
                     <img src="../img/icon/action/red/agent.svg" />
                     <div class="action-btn red">
-                        <div class="label">Pay</div>
-                        <div class="cost">?</div>
+                        <div class="label agent-hire">Hire</div>
+                        <div class="cost">
+                            <span>$</span>
+                            <span class="agent-cost">0</span><span>/s</span>
+                        </div>
+                    </div>
+                    <div class="fire-area">
+                        <img src="../img/icon/action/red/fire.svg" />
                     </div>
                 </div>
                 <div class="action-row">
@@ -303,23 +340,31 @@
             </div>
 
             <div class="cell">
-                <div class="action-row">
+                <div class="action-row house-row">
                     <img src="../img/icon/bldg/space_station.svg" />
                     <div class="action-btn red">
-                        <div class="label">Pay</div>
-                        <div class="cost">$100</div>
+                        <div class="label house-btn">Pay</div>
+                        <div class="cost">
+                            <span>$</span><span class="house-value">0</span>
+                        </div>
                     </div>
                     <div class="sell-area">
                         <img src="../img/icon/action/green/sell.svg" />
                     </div>
                     <span class="times">X</span>
-                    <span>0</span><span>/</span><span>3</span>
+                    <span class="house-count">0</span><span>/</span><span>3</span>
                 </div>
-                <div class="action-row no-count">
+                <div class="action-row agent-row">
                     <img src="../img/icon/action/red/agent.svg" />
                     <div class="action-btn red">
-                        <div class="label">Pay</div>
-                        <div class="cost">?</div>
+                        <div class="label agent-hire">Hire</div>
+                        <div class="cost">
+                            <span>$</span>
+                            <span class="agent-cost">0</span><span>/s</span>
+                        </div>
+                    </div>
+                    <div class="fire-area">
+                        <img src="../img/icon/action/red/fire.svg" />
                     </div>
                 </div>
                 <div class="action-row">

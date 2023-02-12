@@ -70,12 +70,19 @@ body {
         height: 40px;
         width: 500px;
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
         align-items: center;
         padding: 20px;
+
+        font-size: 1.7rem;
+    }
+    .money-area.green {
         color: var(--green);
         border: 2px solid var(--green);
-        font-size: 1.7rem;
+    }
+    .money-area.red {
+        color: var(--red);
+        border: 2px solid var(--red);
     }
 
 .job-area {
@@ -197,7 +204,7 @@ body {
     }
 
         .click-btn .label:hover {
-            background: var(--lightblack);
+            background: var(--darkblack);
         } 
 
     .click-btn .times {
@@ -239,11 +246,15 @@ body {
     cursor: not-allowed;   
 }
 
+    .deactive .action-btn .label:hover {
+        background: var(--black);
+    }
+
 .deactive .click-btn .label  {
     cursor: not-allowed;   
 }
 
-.sell-area {
+.sell-area, .fire-area {
     width: 40px;
     height: 60px;
     background: var(--black);
@@ -254,12 +265,12 @@ body {
     margin-left: 10px;
 }
 
-    .sell-area:hover {
+    .sell-area:hover, .fire-area:hover {
         cursor: pointer;
         background: var(--darkblack);
     }
 
-.sell-area.deactive  {
+.sell-area.deactive, .fire-area.deactive  {
     cursor: not-allowed;
     background: var(--lightgrey);
     opacity: 0.5;

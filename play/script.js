@@ -46,10 +46,34 @@
         elem.className = names.join(" ");
     }
 
+    function calcHouseNet(state) {
+        let house_net = 0;
+        for (let i in state.data.house_value) {
+            i = parseInt(i, 10);
+            const houseValue = state.house_count[i] * state.data.house_value[i];
+            house_net -= houseValue * state.data.prop_tax_rate;
+            house_net += houseValue * state.data.renter_rate;
+            if (state.agent[i]) {
+                house_net -= calcAgentCost(state, i);
+            }
+        }
+        return house_net;
+    }
+
+    function calcAgentCost(state, i) {
+        return Math.ceil(
+            state.data.house_value[i] * state.data.prop_tax_rate
+        );
+    }
+
     // ref - displays
-    const total_money = qs(".money-area span");
+    const money_area  = qs(".money-area");
+    const total_money = qs(".money-area .value");
+    const total_sign  = qs(".money-area .sign");
     const invest_gain = qs(".invest-gain");
-    const loan_loss = qs(".loan-loss");
+    const loan_loss  = qs(".loan-loss");
+    const house_sign = qs(".house-sign");
+    const house_net  = qs(".house-net");
     
     // ref - UI state
     const promo_cost  = qs(".promo_cost span");
@@ -58,13 +82,20 @@
     const invest_count = qsa(".invest-count");
     const loan_value  = qsa(".loan-value");
     const work_value  = qs(".work-value span");
+    const house_value = qsa(".house-value");
+    const house_count = qsa(".house-count");
+    const agent_cost  = qsa(".agent-cost");
 
     // ref - UI elements
     const promo_row  = qs(".promo-row");
     const invest_row = qsa(".invest-row");
     const loan_row   = qsa(".loan-row");
     const loan_btn   = qsa(".loan-btn");
+    const house_row  = qsa(".house-row");
+    const agent_row  = qsa(".agent-row");
     const invest_sell_btn = qsa(".sell-area.invest");
+    const house_sell_btn  = qsa(".house-row .sell-area");
+    const agent_fire_btn  = qsa(".fire-area");
 
     /*
     const salary = document.querySelector(".salary.display > span");
@@ -74,9 +105,16 @@
     function render(state) {
         
         // Map state to displays
-        total_money.innerHTML = state.total_money;
+        total_sign.innerHTML = (state.total_money >= 0)? "+" : "-";
+        total_money.innerHTML = Math.abs(state.total_money);
+        setColor(money_area, (state.total_money >= 0)? "green" : "red");
+        
         invest_gain.innerHTML = state.total_invest * state.data.invest_rate;
         loan_loss.innerHTML   = state.total_loan * state.data.loan_rate;
+        
+        const houseNet = calcHouseNet(state);
+        house_sign.innerHTML = (houseNet >= 0) ? "+ " : "- ";
+        house_net.innerHTML = Math.abs(houseNet);
 
         // Set interface values
         promo_cost.innerHTML  = state.data.promo_cost[state.promo_index];
@@ -97,7 +135,14 @@
                 loan_btn[i].innerHTML = "Get";
                 setColor(loan_btn[i].parentElement, "green");
             }
-        } 
+        }
+        for (let i in state.data.house_value) {
+            i = parseInt(i, 10);
+            house_value[i].innerHTML = state.data.house_value[i];
+            house_count[i].innerHTML = state.house_count[i];
+            const cost = calcAgentCost(state, i);
+            agent_cost[i].innerHTML = cost;
+        }
 
         // Set active state of elements
         setActiveState(state);
@@ -120,6 +165,14 @@
             const loan_value = state.data.loan_value[i];
             state.active.loan_row[i] = loan_value <= state.total_invest * 10;
         }
+
+        for (let i in state.data.house_value) {
+            i = parseInt(i, 10);
+            const house_value = state.data.house_value[i];
+            state.active.house_row[i] = house_value <= state.total_money;
+            state.active.house_sell_btn[i] = state.house_count[i] > 0;
+            state.active.agent_fire_btn[i] = state.agent[i];
+        }
     }
 
     function applyActiveState(state) {
@@ -132,6 +185,13 @@
         for (let i in state.data.loan_value) {
             i = parseInt(i, 10);
             setActive(loan_row[i], state.active.loan_row[i]);
+        }
+        for (let i in state.data.house_value) {
+            i = parseInt(i, 10);
+            setActive(house_row[i], state.active.house_row[i]);
+            setActive(house_sell_btn[i], state.active.house_sell_btn[i]);
+            setActive(agent_fire_btn[i], state.active.agent_fire_btn[i]);
+            setActive(agent_row[i], !state.active.agent_fire_btn[i]);
         }
     }
 
@@ -172,6 +232,13 @@
                 50,
                 75,
                 100
+            ],
+            house_value: [
+                500,
+                2000,
+                4000,
+                6500,
+                9500
             ]
         }
 
@@ -197,6 +264,7 @@
 
             // counts
             invest_count: [0, 0, 0],
+            house_count: [0, 0, 0, 0, 0],
             loan_state: [false, false, false],
             agent: [false, false, false, false, false],
             renter_exists: [false, false, false, false, false],
@@ -208,6 +276,9 @@
                 invest_row: [false, false, false],
                 invest_sell_btn: [false, false, false],
                 loan_row: [false, false, false],
+                house_row: [false, false, false, false, false],
+                house_sell_btn: [false, false, false, false, false],
+                agent_fire_btn: [false, false, false, false, false],
             }
         };
 
@@ -264,10 +335,34 @@
             }
         });
 
+        click_all(".house-btn", (state, index) => {
+            if (state.active.house_row[index]) {
+                state.total_money -= state.data.house_value[index];
+                state.house_count[index] += 1;
+            }
+        });
+
+        click_all(".house-row .sell-area", (state, index) => {
+            if (state.active.house_sell_btn[index]) {
+                state.total_money += state.data.house_value[index];
+                state.house_count[index] -= 1;
+            }
+        });
+
+        click_all(".agent-hire", (state, index) => {
+            state.agent[index] = true;
+        });
+
+        click_all(".fire-area", (state, index) => {
+            state.agent[index] = false;
+        });
+
         render(state);
         setInterval(() => {
-            const loan_loss = state.total_loan * state.data.loan_rate;
-            state.total_money += state.total_invest * state.data.invest_rate - loan_loss;
+            const house_net = calcHouseNet(state);
+            const invest_gain = state.total_invest * state.data.invest_rate;
+            const loan_loss  = state.total_loan * state.data.loan_rate;
+            state.total_money += house_net + invest_gain - loan_loss;
             render(state);
         }, 1000);
 
