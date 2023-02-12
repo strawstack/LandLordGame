@@ -52,7 +52,9 @@
             i = parseInt(i, 10);
             const houseValue = state.house_count[i] * state.data.house_value[i];
             house_net -= houseValue * state.data.prop_tax_rate;
-            house_net += houseValue * state.data.renter_rate;
+            if (state.renter_exists[i] || state.agent[i]) {
+                house_net += houseValue * state.data.renter_rate;
+            }
             if (state.agent[i]) {
                 house_net -= calcAgentCost(state, i);
             }
@@ -177,10 +179,12 @@
         for (let i in state.data.house_value) {
             i = parseInt(i, 10);
             const house_value = state.data.house_value[i];
-            state.active.house_row[i] = house_value <= state.total_money;
+            const affordHouse = house_value <= state.total_money;
+            const checkHouseLimit = state.house_count[i] < state.data.house_limit;
+            state.active.house_row[i] = affordHouse && checkHouseLimit;
             state.active.house_sell_btn[i] = state.house_count[i] > 0;
             state.active.agent_fire_btn[i] = state.agent[i];
-            state.active.renter_row[i] = state.house_count[i] > 0; 
+            state.active.renter_row[i] = state.house_count[i] > 0 && !state.agent[i]; 
         }
     }
 
@@ -228,6 +232,7 @@
             renter_rate: 0.0032,
             prop_tax_rate: 0.0016,
             renter_time: 120,
+            house_limit: 3,
             house_cost: [
                 100,
                 1000,
@@ -379,6 +384,8 @@
 
         click_all(".fire-area", (state, index) => {
             state.agent[index] = false;
+            state.renter_exists[index] = false;
+            state.renter_time_left[index] = 0;
         });
 
         click_all(".renter-btn", (state, index) => {
@@ -401,7 +408,7 @@
 
             for (let i in state.renter_exists) {
                 i = parseInt(i, 10);
-                if (state.renter_exists[i]) {
+                if (state.renter_exists[i] && state.renter_time_left[i] > 0) {
                     state.renter_time_left[i] -= 1;
                     if (state.renter_time_left[i] <= 0) {
                         state.renter_exists[i] = false;

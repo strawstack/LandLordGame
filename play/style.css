@@ -19,6 +19,7 @@ html, body {
     margin: 0px;
     padding: 0px;
     color: var(--black);
+    user-select: none;
 }
 
 html {
@@ -140,7 +141,6 @@ body {
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr 1fr;
-    user-select: none;
     margin-left: 10px;
 }
     .action-btn .label {
@@ -238,8 +238,12 @@ body {
         align-items: center;
     }
 
-.deactive img, .deactive .action-btn, .deactive .click-btn {
+.deactive img, .deactive .action-btn {
     opacity: 0.5;
+}
+
+.deactive .click-btn, .renter-row.deactive img, .deactive .rent-timer, .deactive .renter-time {
+    opacity: 0;
 }
 
 .deactive .action-btn .label  {
@@ -249,18 +253,6 @@ body {
     .deactive .action-btn .label:hover {
         background: var(--black);
     }
-
-.deactive .click-btn .label  {
-    cursor: not-allowed;   
-}
-
-    .deactive .click-btn .label:hover {
-        background: var(--black);
-    }
-
-.deactive .rent-timer, .deactive .renter-time {
-    display: none;
-}
 
 .sell-area, .fire-area {
     width: 40px;
