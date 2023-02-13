@@ -72,10 +72,17 @@
         return (50 + promoIndex * 10) * Math.pow(2, promoIndex);
     }
 
+    function calcMoneyChange(state) {
+        const house_net = calcHouseNet(state);
+        const invest_gain = state.total_invest * state.data.invest_rate;
+        const loan_loss  = state.total_loan * state.data.loan_rate;
+        return house_net + invest_gain - loan_loss; 
+    }
+
     // display number
     function dn(number) {
         const roundNumber = Math.floor(number * 100) / 100;
-        const TEN_THOUSAND = 10000;
+        const ONE_THOUSAND = 1000;
         const ONE_MILLION  = 1000000;
         const ONE_BILLION  = 1000000000;
         const ONE_TRILLION = 1000000000000;
@@ -85,7 +92,7 @@
             display: null
         };
 
-        if (roundNumber < TEN_THOUSAND) {
+        if (roundNumber < ONE_THOUSAND) {
             res.number  = roundNumber;
             res.display = roundNumber;
 
@@ -126,8 +133,44 @@
         }
         return `${n}.00`;
     }
+
     function rrn(numberStr) {
         return parseFloat(rr(numberStr));
+    }
+
+    function rrs(numberStr) {
+        let res = [];
+        const preFix = rr(numberStr).split(".")[0];
+        let index = preFix.length - 1;
+        for (let i = preFix.length - 1; i >= 0; i--) {
+            let count = 3;
+            let pack = [];
+            while (count > 0 && index >= 0) {
+                pack.push(preFix[index])
+                index -= 1;
+                count -= 1;
+            }
+            if (pack.length > 0) {
+                res.push(pack.reverse());
+            }
+        }
+        res = res.reverse();
+        res = res.map(x => x.join(""));
+        res = res.join(" ");
+        return res; 
+    }
+
+    const SAVE_KEY = "land_lord_game";
+    function save(state) {
+        window.localStorage.setItem(SAVE_KEY, 
+            JSON.stringify(state)
+        );
+    }
+    
+    function load() {
+        return JSON.parse(
+            window.localStorage.getItem(SAVE_KEY)
+        );
     }
 
     // ref - displays
@@ -138,6 +181,9 @@
     const loan_loss  = qs(".loan-loss");
     const house_sign = qs(".house-sign");
     const house_net  = qs(".house-net");
+    const rate_sign  = qs(".rate .sign");
+    const rate_value = qs(".rate .value");
+    const rate       = qs(".rate");
     
     // ref - UI state
     const promo_cost  = qs(".promo_cost span");
@@ -173,7 +219,7 @@
         
         // Map state to displays
         total_sign.innerHTML = (state.total_money >= 0)? "+" : "-";
-        total_money.innerHTML = rr(Math.abs(state.total_money));
+        total_money.innerHTML = rrs(Math.abs(state.total_money));
         setColor(money_area, (state.total_money >= 0)? "green" : "red");
 
         invest_gain.innerHTML = rr(state.total_invest * state.data.invest_rate);
@@ -208,13 +254,19 @@
             house_value[i].innerHTML = dn(state.data.house_value[i]).display;
             house_count[i].innerHTML = state.house_count[i];
             const cost = calcAgentCost(state, i);
-            agent_cost[i].innerHTML = cost;
+            agent_cost[i].innerHTML = dn(cost).display;
             renter_time[i].innerHTML = state.renter_time_left[i];
         }
         for (let i in state.renter_exists) {
             i = parseInt(i, 10);
             renter_clicks[i].innerHTML = state.renter_clicks_left[i];
         }
+
+        const moneyChange = calcMoneyChange(state);
+        const rateSign = (moneyChange >= 0)? "+" : "-"; 
+        rate_sign.innerHTML = rateSign;
+        rate_value.innerHTML = dn(Math.abs(moneyChange)).display;
+        setColor(rate, (moneyChange >= 0)? "green" : "red");
 
         // Set active state of elements
         setActiveState(state);
@@ -228,14 +280,24 @@
         for (let i in state.data.invest_cost) {
             i = parseInt(i, 10);
             const invest_cost = state.data.invest_cost[i];
-            state.active.invest_row[i] = invest_cost <= state.total_money;
+            const haveMoney = invest_cost <= state.total_money;
+            const underLimit = state.invest_count[i] < state.data.invest_limit;
+            state.active.invest_row[i] = haveMoney && underLimit;
             state.active.invest_sell_btn[i] = state.invest_count[i] > 0; 
         }
 
         for (let i in state.data.loan_value) {
             i = parseInt(i, 10);
             const loan_value = state.data.loan_value[i];
-            state.active.loan_row[i] = loan_value <= state.total_invest * 10;
+            const hasLoan = state.loan_state[i];
+            if (hasLoan) {
+                const canAffordLoan = loan_value <= state.total_money;
+                state.active.loan_row[i] = canAffordLoan;
+
+            } else {
+                const canAffordLoan = loan_value <= state.total_invest * 10;
+                state.active.loan_row[i] = canAffordLoan;
+            }
         }
 
         for (let i in state.data.house_value) {
@@ -275,29 +337,23 @@
         // data
         const data = {
             invest_cost: [
-                100,
-                1000,
-                5000
+                250,
+                5000,
+                100000
             ],
             loan_value: [
-                1500,
-                5000,
-                9500
+                3000,
+                50000,
+                250000
             ],
             invest_rate: 0.0016,
             loan_rate: 0.0032,
             renter_rate: 0.0048,
             prop_tax_rate: 0.0016,
             renter_time: 120,
-            house_limit: 3,
+            house_limit: 5,
+            invest_limit: 9,
             agent_cost: 0.0048,
-            house_cost: [
-                100,
-                1000,
-                5000,
-                6000, 
-                9900
-            ],
             renter_click: [
                 20,
                 30,
@@ -306,11 +362,11 @@
                 100
             ],
             house_value: [
-                500,
-                2000,
-                4000,
-                6500,
-                9500
+                1000,
+                20000,
+                250000,
+                1000000,
+                20000000
             ],
             renter_clicks: [
                 30,
@@ -321,12 +377,12 @@
             ]
         }
 
-        const state = {
+        let state = {
             
             data: data,
 
             // work
-            work_value: 50,
+            work_value: 1,
 
             // money
             total_money: 0,
@@ -367,6 +423,14 @@
         for (let i in state.renter_exists) {
             i = parseInt(i, 10);
             state.renter_clicks_left[i] = state.data.renter_click[i];
+        }
+
+        const resetState = JSON.stringify(state);
+
+        // Possibly load existing state
+        const stateOrNull = load(state);
+        if (stateOrNull !== null) {
+            state = stateOrNull;
         }
 
         const click = clickFact(state);
@@ -433,6 +497,13 @@
             if (state.active.house_sell_btn[index]) {
                 state.total_money += state.data.house_value[index];
                 state.house_count[index] -= 1;
+                
+                // Reset renters if house count zero 
+                if (state.house_count[index] == 0) {
+                    state.renter_exists[index] = false;
+                    state.renter_time_left[index] = 0;
+                    state.renter_clicks_left[index] = state.data.renter_clicks[index];
+                }
             }
         });
 
@@ -457,12 +528,18 @@
             }
         });
 
+        click(".reset-link", (state) => {
+            const rState = JSON.parse(resetState); 
+            if (confirm("Reset all progress? (This cannot be undone.)")) {
+                for (let k in state) {
+                    state[k] = rState[k];
+                }
+            }
+        });
+
         render(state);
         setInterval(() => {
-            const house_net = calcHouseNet(state);
-            const invest_gain = state.total_invest * state.data.invest_rate;
-            const loan_loss  = state.total_loan * state.data.loan_rate;
-            state.total_money += house_net + invest_gain - loan_loss;
+            state.total_money += calcMoneyChange(state);
             state.total_money = rrn(state.total_money);
 
             for (let i in state.renter_exists) {
@@ -476,6 +553,7 @@
             }
 
             render(state);
+            save(state);
         }, 1000);
 
     }

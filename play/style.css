@@ -281,3 +281,35 @@ body {
     height: 25px;
     margin: 0px 10px;
 }
+
+.total-and-rate {
+    display: flex;
+    align-items: center;
+}
+
+    .rate {
+        margin-left: 10px;
+    }
+
+    .rate.green {
+        color: var(--green);
+    }
+
+    .rate.red {
+        color: var(--red);
+    }
+
+.reset-area {
+    grid-column: 1/4;
+    display: flex;
+    justify-content: flex-end;
+}
+
+    .reset-link {
+        padding: 5px;
+    }
+
+    .reset-link:hover {
+        color: var(--red);
+        cursor: pointer;
+    }
