@@ -4,6 +4,24 @@ A clicker game about owning property.
 
 ![](./img/LandLord.png)
 
+# How to Play
+
+I'm not sure how intuitive my UI is. Here's a quick explanation:
+
+Click "Work" to earn money.
+Buy your first promotion for $50.
+
+Buy investments to earn dividens.
+Buying investments will unlock loans.
+
+Use loans to buy houses.
+Houses cost property tax if you own them.
+Click the "renter" (smiling face) button enough times to get a renter for 2min.
+
+Try to optimize your rate or money increase buy purchasing houses, promotions, paying-off loans.
+
+In a speed run, it took me 25-30 min to basically max out the game (9 satellites, 9 x 100k investments, etc)
+
 # Cheats
 
 Enter the following in the console, and the work button will be auto-clicked 5x a sec. Set `d = false;` to stop the auto-clicking.
